@@ -19,6 +19,7 @@ from chromadb.api.types import (
     Where,
     IDs,
     GetResult,
+    AddResult,
     QueryResult,
     ID,
     OneOrMany,
@@ -34,7 +35,7 @@ if TYPE_CHECKING:
 class AsyncCollection(CollectionCommon["AsyncServerAPI"]):
     async def add(
         self,
-        ids: OneOrMany[ID],
+        ids: Optional[OneOrMany[ID]] = None,
         embeddings: Optional[
             Union[
                 OneOrMany[Embedding],
@@ -45,7 +46,7 @@ class AsyncCollection(CollectionCommon["AsyncServerAPI"]):
         documents: Optional[OneOrMany[Document]] = None,
         images: Optional[OneOrMany[Image]] = None,
         uris: Optional[OneOrMany[URI]] = None,
-    ) -> None:
+    ) -> AddResult:
         """Add embeddings to the data store.
         Args:
             ids: The ids of the embeddings you wish to add
@@ -75,7 +76,7 @@ class AsyncCollection(CollectionCommon["AsyncServerAPI"]):
             uris,
         )
 
-        await self._client._add(
+        result = await self._client._add(
             record_set["ids"],
             self.id,
             cast(Embeddings, record_set["embeddings"]),
@@ -83,6 +84,8 @@ class AsyncCollection(CollectionCommon["AsyncServerAPI"]):
             record_set["documents"],
             record_set["uris"],
         )
+
+        return result
 
     async def count(self) -> int:
         """The total number of embeddings added to the database
@@ -267,7 +270,6 @@ class AsyncCollection(CollectionCommon["AsyncServerAPI"]):
             documents,
             images,
             uris,
-            require_embeddings_or_data=False,
         )
 
         await self._client._update(
@@ -311,7 +313,6 @@ class AsyncCollection(CollectionCommon["AsyncServerAPI"]):
             documents,
             images,
             uris,
-            require_embeddings_or_data=True,
         )
 
         await self._client._upsert(

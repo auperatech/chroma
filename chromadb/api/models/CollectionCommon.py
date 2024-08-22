@@ -373,7 +373,7 @@ class CollectionCommon(Generic[ClientT]):
 
     def _process_add_request(
         self,
-        ids: OneOrMany[ID],
+        ids: Optional[OneOrMany[ID]],
         embeddings: Optional[
             Union[
                 OneOrMany[Embedding],
@@ -386,7 +386,7 @@ class CollectionCommon(Generic[ClientT]):
         uris: Optional[OneOrMany[URI]] = None,
     ) -> RecordSet:
         unpacked_embedding_set = self._unpack_embedding_set(
-            ids,
+            ids if ids is not None else [],
             embeddings,
             metadatas,
             documents,
@@ -448,7 +448,6 @@ class CollectionCommon(Generic[ClientT]):
         documents: Optional[OneOrMany[Document]],
         images: Optional[OneOrMany[Image]],
         uris: Optional[OneOrMany[URI]],
-        require_embeddings_or_data: bool = True,
     ) -> RecordSet:
         unpacked_embedding_set = self._unpack_embedding_set(
             ids, embeddings, metadatas, documents, images, uris
