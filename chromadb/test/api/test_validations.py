@@ -6,7 +6,7 @@ import chromadb.errors as errors
 from chromadb.api.types import IDs, validate_ids
 
 
-def test_ids_validation():
+def test_ids_validation() -> None:
     ids = ["id1", "id2", "id3"]
     assert validate_ids(ids) == ids
 
