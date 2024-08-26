@@ -4,13 +4,14 @@ from typing import (
     Union,
     cast,
 )
-import numpy as np
+from numpy.typing import NDArray
 
 from chromadb.api.types import (
     URI,
     CollectionMetadata,
     Embedding,
     Embeddings,
+    EmbeddingDType,
     Include,
     Metadata,
     Document,
@@ -37,7 +38,7 @@ class AsyncCollection(CollectionCommon["AsyncServerAPI"]):
         embeddings: Optional[
             Union[
                 OneOrMany[Embedding],
-                OneOrMany[np.ndarray],
+                OneOrMany[NDArray[EmbeddingDType]],
             ]
         ] = None,
         metadatas: Optional[OneOrMany[Metadata]] = None,
@@ -99,7 +100,7 @@ class AsyncCollection(CollectionCommon["AsyncServerAPI"]):
         limit: Optional[int] = None,
         offset: Optional[int] = None,
         where_document: Optional[WhereDocument] = None,
-        include: Include = ["metadatas", "documents"],
+        include: Include = ["metadatas", "documents"],  # type: ignore[list-item]
     ) -> GetResult:
         """Get embeddings and their associate data from the data store. If no ids or where filter is provided returns
         all embeddings up to limit starting at offset.
@@ -152,7 +153,7 @@ class AsyncCollection(CollectionCommon["AsyncServerAPI"]):
         query_embeddings: Optional[
             Union[
                 OneOrMany[Embedding],
-                OneOrMany[np.ndarray],
+                OneOrMany[NDArray[EmbeddingDType]],
             ]
         ] = None,
         query_texts: Optional[OneOrMany[Document]] = None,
@@ -161,7 +162,7 @@ class AsyncCollection(CollectionCommon["AsyncServerAPI"]):
         n_results: int = 10,
         where: Optional[Where] = None,
         where_document: Optional[WhereDocument] = None,
-        include: Include = ["metadatas", "documents", "distances"],
+        include: Include = ["metadatas", "documents", "distances"],  # type: ignore[list-item]
     ) -> QueryResult:
         """Get the n_results nearest neighbor embeddings for provided query_embeddings or query_texts.
 
@@ -240,7 +241,7 @@ class AsyncCollection(CollectionCommon["AsyncServerAPI"]):
         embeddings: Optional[
             Union[
                 OneOrMany[Embedding],
-                OneOrMany[np.ndarray],
+                OneOrMany[NDArray[EmbeddingDType]],
             ]
         ] = None,
         metadatas: Optional[OneOrMany[Metadata]] = None,
@@ -284,7 +285,7 @@ class AsyncCollection(CollectionCommon["AsyncServerAPI"]):
         embeddings: Optional[
             Union[
                 OneOrMany[Embedding],
-                OneOrMany[np.ndarray],
+                OneOrMany[NDArray[EmbeddingDType]],
             ]
         ] = None,
         metadatas: Optional[OneOrMany[Metadata]] = None,

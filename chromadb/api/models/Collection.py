@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING, Optional, Union, cast
 import numpy as np
+from numpy.typing import NDArray
 
 from chromadb.api.models.CollectionCommon import CollectionCommon
 from chromadb.api.types import (
@@ -7,6 +8,7 @@ from chromadb.api.types import (
     CollectionMetadata,
     Embedding,
     Embeddings,
+    EmbeddingDType,
     Include,
     Metadata,
     Document,
@@ -41,10 +43,10 @@ class Collection(CollectionCommon["ServerAPI"]):
     def add(
         self,
         ids: OneOrMany[ID],
-        embeddings: Optional[  # type: ignore[type-arg]
+        embeddings: Optional[
             Union[
                 OneOrMany[Embedding],
-                OneOrMany[np.ndarray],
+                OneOrMany[NDArray[EmbeddingDType]],
             ]
         ] = None,
         metadatas: Optional[OneOrMany[Metadata]] = None,
@@ -97,7 +99,7 @@ class Collection(CollectionCommon["ServerAPI"]):
         limit: Optional[int] = None,
         offset: Optional[int] = None,
         where_document: Optional[WhereDocument] = None,
-        include: Include = ["metadatas", "documents"],
+        include: Include = ["metadatas", "documents"],  # type: ignore[list-item]
     ) -> GetResult:
         """Get embeddings and their associate data from the data store. If no ids or where filter is provided returns
         all embeddings up to limit starting at offset.
@@ -159,7 +161,7 @@ class Collection(CollectionCommon["ServerAPI"]):
         n_results: int = 10,
         where: Optional[Where] = None,
         where_document: Optional[WhereDocument] = None,
-        include: Include = ["metadatas", "documents", "distances"],
+        include: Include = ["metadatas", "documents", "distances"],  # type: ignore[list-item]
     ) -> QueryResult:
         """Get the n_results nearest neighbor embeddings for provided query_embeddings or query_texts.
 

@@ -249,12 +249,7 @@ class EmbeddingFunction(Protocol[D]):
 
             converted = maybe_cast_one_to_many_embedding(result)
 
-            if converted is None:
-                raise ValueError(
-                    "Expected embeddings not to be None"
-                )
-
-            return validate_embeddings(converted)
+            return validate_embeddings(converted)  # type: ignore[arg-type]
 
         setattr(cls, "__call__", __call__)
 

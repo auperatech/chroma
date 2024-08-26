@@ -10,6 +10,7 @@ from typing import (
     cast,
 )
 import numpy as np
+from numpy.typing import NDArray
 from uuid import UUID
 
 import chromadb.utils.embedding_functions as ef
@@ -19,6 +20,7 @@ from chromadb.api.types import (
     DataLoader,
     Embedding,
     Embeddings,
+    EmbeddingDType,
     Embeddable,
     RecordSet,
     GetResult,
@@ -152,10 +154,10 @@ class CollectionCommon(Generic[ClientT]):
     def _unpack_embedding_set(
         self,
         ids: OneOrMany[ID],
-        embeddings: Optional[  # type: ignore[type-arg]
+        embeddings: Optional[
             Union[
                 OneOrMany[Embedding],
-                OneOrMany[np.ndarray],
+                OneOrMany[NDArray[EmbeddingDType]],
             ]
         ],
         metadatas: Optional[OneOrMany[Metadata]],
@@ -340,7 +342,7 @@ class CollectionCommon(Generic[ClientT]):
         valid_query_embeddings = (
             validate_embeddings(
                 self._normalize_embeddings(
-                    maybe_cast_one_to_many_embedding(query_embeddings)  # type: ignore[type-arg]
+                    maybe_cast_one_to_many_embedding(query_embeddings)  # type: ignore[arg-type]
                 )
             )
             if query_embeddings is not None
@@ -429,7 +431,7 @@ class CollectionCommon(Generic[ClientT]):
         embeddings: Optional[
             Union[
                 OneOrMany[Embedding],
-                OneOrMany[np.ndarray],
+                OneOrMany[NDArray[EmbeddingDType]],
             ]
         ],
         metadatas: Optional[OneOrMany[Metadata]],
